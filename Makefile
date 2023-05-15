@@ -1,5 +1,3 @@
-.DEFAULT_GOAL := build
-
 clean:
 	make -C app clean
 
@@ -20,6 +18,5 @@ lint:
 
 update-deps:
 	make -C app update-deps
-
 
 .PHONY: build
