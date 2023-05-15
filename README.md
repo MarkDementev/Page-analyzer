@@ -1,2 +1,10 @@
+### CI status:
+
 ### Hexlet tests and linter status:
+
 [![Actions Status](https://github.com/MarkDementev/java-project-72/workflows/hexlet-check/badge.svg)](https://github.com/MarkDementev/java-project-72/actions)
+
+
+# Overview
+
+This project is a website based on the Javelin framework. This site analyzes the pages indicated to it for SEO suitability.
