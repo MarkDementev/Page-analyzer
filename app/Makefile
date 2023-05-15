@@ -19,5 +19,4 @@ lint:
 update-deps:
 	./gradlew useLatestVersions
 
-
 .PHONY: build
