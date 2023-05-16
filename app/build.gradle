@@ -24,10 +24,6 @@ test {
     useJUnitPlatform()
 }
 
-testlogger {
-    showStandardStreams true
-}
-
 jacocoTestReport {
     reports {
         xml.required = true
