@@ -1,4 +1,5 @@
 ### CI status:
+[![Actions Status](https://github.com/MarkDementev/java-project-72/workflows/Java%20CI/badge.svg)](https://github.com/MarkDementev/java-project-72/actions)
 [![Maintainability](https://api.codeclimate.com/v1/badges/d68eab16a4dae3be7b2b/maintainability)](https://codeclimate.com/github/MarkDementev/java-project-72/maintainability)
 
 ### Hexlet tests and linter status:
