@@ -1,8 +1,10 @@
 plugins {
     id 'java'
-    id "se.patrikerdes.use-latest-versions" version "0.2.18"
     id 'checkstyle'
     id 'jacoco'
+    id 'se.patrikerdes.use-latest-versions' version '0.2.18'
+    id 'com.github.ben-manes.versions' version '0.46.0'
+    id 'application'
 }
 
 group = 'hexlet.code'
@@ -14,10 +16,13 @@ repositories {
 
 dependencies {
     testImplementation(
-            'org.junit.jupiter:junit-jupiter-api:5.9.2',
+            'org.junit.jupiter:junit-jupiter-api:5.10.0-M1',
             'org.assertj:assertj-core:3.24.2'
     )
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.0-M1'
+
+    implementation 'io.javalin:javalin:5.5.0'
+    implementation 'org.slf4j:slf4j-simple:2.0.7'
 }
 
 test {
@@ -28,6 +33,10 @@ jacocoTestReport {
     reports {
         xml.required = true
     }
+}
+
+application {
+    mainClass = 'hexlet.code.App'
 }
 
 compileJava {
