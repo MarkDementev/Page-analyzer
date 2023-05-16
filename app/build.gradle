@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id "se.patrikerdes.use-latest-versions" version "0.2.18"
     id 'checkstyle'
+    id 'jacoco'
 }
 
 group = 'hexlet.code'
@@ -12,12 +13,25 @@ repositories {
 }
 
 dependencies {
-    testImplementation platform('org.junit:junit-bom:5.9.1')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation(
+            'org.junit.jupiter:junit-jupiter-api:5.9.2',
+            'org.assertj:assertj-core:3.24.2'
+    )
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
 }
 
 test {
     useJUnitPlatform()
+}
+
+testlogger {
+    showStandardStreams true
+}
+
+jacocoTestReport {
+    reports {
+        xml.required = true
+    }
 }
 
 compileJava {
