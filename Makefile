@@ -19,4 +19,7 @@ lint:
 update-deps:
 	make -C app update-deps
 
+run:
+	make -C app run
+	
 .PHONY: build
