@@ -1,0 +1,14 @@
+datasource:
+  default: ${APP_ENV}
+  development:
+    username: sa
+    password: sa
+    url: jdbc:h2:./project72DataBase
+  production:
+    username: ${JDBC_DATABASE_USERNAME}
+    password: ${JDBC_DATABASE_PASSWORD}
+    url: ${JDBC_DATABASE_URL}
+
+ebean:
+  migration:
+    run: true

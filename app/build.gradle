@@ -5,6 +5,7 @@ plugins {
     id 'se.patrikerdes.use-latest-versions' version '0.2.18'
     id 'com.github.ben-manes.versions' version '0.46.0'
     id 'application'
+    id 'io.ebean' version '13.17.4'
 }
 
 group = 'hexlet.code'
@@ -15,14 +16,28 @@ repositories {
 }
 
 dependencies {
-    testImplementation(
-            'org.junit.jupiter:junit-jupiter-api:5.10.0-M1',
-            'org.assertj:assertj-core:3.24.2'
-    )
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.0-M1'
-
     implementation 'io.javalin:javalin:5.5.0'
     implementation 'org.slf4j:slf4j-simple:2.0.7'
+
+    implementation 'io.ebean:ebean:13.17.4'
+    implementation 'io.ebean:ebean-querybean:13.17.4'
+    implementation 'io.ebean:ebean-annotation:8.4'
+    annotationProcessor 'io.ebean:querybean-generator:13.17.4'
+    implementation 'io.ebean:ebean-migration:13.7.0'
+    implementation 'io.ebean:ebean-ddl-generator:13.17.4'
+
+    implementation 'org.glassfish.jaxb:jaxb-runtime:2.3.5'
+    implementation 'javax.activation:activation:1.1.1'
+    implementation 'javax.persistence:javax.persistence-api:2.2'
+
+    implementation 'com.h2database:h2:2.1.214'
+
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.0-M1'
+    testImplementation(
+            'org.junit.jupiter:junit-jupiter-api:5.10.0-M1',
+            'org.assertj:assertj-core:3.24.2',
+            'io.ebean:ebean-test:13.17.4'
+    )
 }
 
 test {
@@ -41,4 +56,9 @@ application {
 
 compileJava {
     options.release = 17
+}
+
+task generateMigrations(type: JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'hexlet.code.MigrationGenerator'
 }
