@@ -1,13 +1,12 @@
 datasource:
-  default: ${APP_ENV}
   development:
-    username: sa
-    password: sa
-    url: jdbc:h2:./project72DataBase
+    username: username
+    password: password
+    url: jdbc:h2:./project72DataBaseH2
   production:
-    username: ${JDBC_DATABASE_USERNAME}
-    password: ${JDBC_DATABASE_PASSWORD}
-    url: ${JDBC_DATABASE_URL}
+    username: username
+    password: password
+    url: jdbc:postgresql:./project72DataBasePostgres
 
 ebean:
   migration:
