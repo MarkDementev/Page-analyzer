@@ -18,6 +18,7 @@ repositories {
 dependencies {
     implementation 'io.javalin:javalin:5.5.0'
     implementation 'org.slf4j:slf4j-simple:2.0.7'
+    implementation 'io.javalin:javalin-rendering:5.5.0'
 
     implementation 'io.ebean:ebean:13.17.4'
     implementation 'io.ebean:ebean-querybean:13.17.4'
@@ -26,11 +27,18 @@ dependencies {
     implementation 'io.ebean:ebean-migration:13.7.0'
     implementation 'io.ebean:ebean-ddl-generator:13.17.4'
 
-    implementation 'org.glassfish.jaxb:jaxb-runtime:2.3.5'
+    implementation 'org.glassfish.jaxb:jaxb-runtime:4.0.2'
     implementation 'javax.activation:activation:1.1.1'
     implementation 'javax.persistence:javax.persistence-api:2.2'
 
     implementation 'com.h2database:h2:2.1.214'
+    implementation 'org.postgresql:postgresql:42.6.0'
+
+    implementation 'org.thymeleaf:thymeleaf:3.1.1.RELEASE'
+    implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:3.2.1'
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-java8time:3.0.4.RELEASE'
+
+    implementation 'org.webjars:bootstrap:5.2.3'
 
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.0-M1'
     testImplementation(
