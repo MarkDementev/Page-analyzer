@@ -1,12 +1,10 @@
 package hexlet.code;
 
-import hexlet.code.Controllers.RootController;
-import hexlet.code.Controllers.UrlsController;
+import hexlet.code.controllers.RootController;
+import hexlet.code.controllers.UrlsController;
 
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinThymeleaf;
-import static io.javalin.apibuilder.ApiBuilder.path;
-import static io.javalin.apibuilder.ApiBuilder.post;
 
 import org.thymeleaf.TemplateEngine;
 import nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect;

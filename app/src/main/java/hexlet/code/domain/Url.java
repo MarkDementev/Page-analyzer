@@ -1,4 +1,4 @@
-package hexlet.code.Domain;
+package hexlet.code.domain;
 
 import io.ebean.Model;
 import io.ebean.annotation.WhenCreated;
@@ -20,6 +20,7 @@ public class Url extends Model {
     public Url(String name) {
         this.name = name;
     }
+
 
     public long getId() {
         return this.id;

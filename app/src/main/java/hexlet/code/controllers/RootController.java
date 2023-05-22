@@ -1,4 +1,4 @@
-package hexlet.code.Controllers;
+package hexlet.code.controllers;
 
 import io.javalin.http.Handler;
 
