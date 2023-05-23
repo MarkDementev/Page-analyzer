@@ -11,6 +11,10 @@ import nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect;
 import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
+import static io.javalin.apibuilder.ApiBuilder.path;
+import static io.javalin.apibuilder.ApiBuilder.get;
+import static io.javalin.apibuilder.ApiBuilder.post;
+
 public final class App {
     public static void main(String[] args) {
         Javalin app = getApp();
@@ -59,12 +63,15 @@ public final class App {
 
     private static void addRoutes(Javalin app) {
         app.get("/", RootController.mainPage);
-        app.post("/urls", UrlsController.createUrl);
 
-//        app.routes(() -> {
-//            path("urls", () -> {
-//                post(UrlsController.createUrl);
-//            });
-//        });
+        app.routes(() -> {
+            path("urls", () -> {
+                post(UrlsController.createUrl);
+                get(UrlsController.showAllAddedUrls);
+                path("{id}", () -> {
+                    get(UrlsController.showUrl);
+                });
+            });
+        });
     }
 }
