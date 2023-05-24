@@ -11,13 +11,14 @@ import io.javalin.http.NotFoundResponse;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public final class UrlsController {
     public static Handler createUrl = ctx -> {
         String inputUrl = ctx.formParam("url");
-        String normalizedUrl = transformUrl(inputUrl);
+        String normalizedUrl = transformUrl(Objects.requireNonNull(inputUrl));
 
         if (normalizedUrl == null) {
             ctx.sessionAttribute("flash", "Некорректный URL");
@@ -96,11 +97,7 @@ public final class UrlsController {
         URL urlToTransform = new URL(inputUrl);
         String protocol = urlToTransform.getProtocol();
         String authority = urlToTransform.getAuthority();
-        String port = String.valueOf(urlToTransform.getPort());
 
-        if (port.equals("-1")) {
-            port = "";
-        }
-        return protocol + "://" + authority + port;
+        return protocol + "://" + authority;
     }
 }

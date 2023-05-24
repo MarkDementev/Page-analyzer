@@ -19,15 +19,14 @@
                 <th class="col-1">Код ответа</th>
             </tr>
             </thead>
-
             <tbody>
             <tr th:each="url : ${urls}" th:object="${url}">
                 <td th:text ="*{getId()}"></td>
                 <td>
-                    <a th:href="@{/urls/{id}(id=*{getId()})}" th:text="${#strings.abbreviate(url.getName(), 30)}"></a>
+                    <a th:href="@{/urls/{id}(id=*{getId()})}" th:text="*{getName()}"></a>
                 </td>
-                <td>Последняя проверка</td>
-                <td>Код ответа</td>
+                <td>НУЖНО ДОБАВИТЬ</td>
+                <td>НУЖНО ДОБАВИТЬ</td>
             </tr>
             </tbody>
         </table>
