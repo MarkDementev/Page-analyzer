@@ -39,7 +39,7 @@ public final class App {
     }
 
     private static int getPort() {
-        String port = System.getenv().getOrDefault("PORT", "3000");
+        String port = System.getenv().getOrDefault("PORT", "8080");
         return Integer.valueOf(port);
     }
 
