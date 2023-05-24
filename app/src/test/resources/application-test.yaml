@@ -1,0 +1,10 @@
+ebean:
+  test:
+    useDocker: false
+    platform: h2
+    ddlMode: dropCreate
+    dbName: development
+    h2:
+      username: sa
+      password: sa
+      url: jdbc:h2:mem:myapp

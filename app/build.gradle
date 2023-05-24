@@ -44,7 +44,8 @@ dependencies {
     testImplementation(
             'org.junit.jupiter:junit-jupiter-api:5.10.0-M1',
             'org.assertj:assertj-core:3.24.2',
-            'io.ebean:ebean-test:13.17.4'
+            'io.ebean:ebean-test:13.17.4',
+            'com.konghq:unirest-java:4.0.0-RC2'
     )
 }
 
