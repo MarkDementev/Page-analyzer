@@ -5,7 +5,7 @@
       <profile name="Gradle Imported" enabled="true">
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
-          <entry name="$PROJECT_DIR$/../../.gradle/caches/modules-2/files-2.1/io.ebean/querybean-generator/13.17.4/f624697c2280ee67065b6eafdbbdbd8b57fdcff6/querybean-generator-13.17.4.jar" />
+          <entry name="$PROJECT_DIR$/../../.gradle/caches/modules-2/files-2.1/io.ebean/querybean-generator/13.15.0/9825aded4302de5c38675b02565a1e747da787b2/querybean-generator-13.15.0.jar" />
         </processorPath>
         <module name="app.main" />
       </profile>

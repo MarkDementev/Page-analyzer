@@ -1,11 +1,16 @@
 <!DOCTYPE html>
-<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html lang = "ru"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/application.html}">
+
+<head>
+    <title>Анализатор страниц - урл со списком проверок</title>
+</head>
 
 <section layout:fragment="content" th:object="${url}">
     <div class="container-lg mt-5">
 
-        <h1 th:text="'Сайт ' + *{name}"></h1>
+        <h1 th:text="'Сайт ' + *{getName()}"></h1>
 
         <table class="table table-bordered table-hover mt-3">
             <tr>
@@ -14,7 +19,7 @@
             </tr>
             <tr>
               <td>Имя</td>
-              <td th:text="*{name}"></td>
+              <td th:text="*{getName()}"></td>
             </tr>
             <tr>
               <td>Дата создания</td>
@@ -24,31 +29,30 @@
 
         <h2 class="mt-5">Проверки</h2>
 
-        <form method="post" th:action="@{/urls/{id}(id=*{getId()})/checks}">
+        <form method="post" th:action="@{/urls/{id}/checks(id=*{getId()})}">
             <button type="submit" class="btn btn-primary">Запустить проверку</button>
         </form>
 
         <table class="table table-bordered table-hover mt-3">
-<!--            <thead>-->
+            <thead>
             <th class="col-1">ID</th>
             <th class="col-1">Код ответа</th>
             <th>title</th>
             <th>h1</th>
             <th>description</th>
             <th class="col-2">Дата проверки</th>
-<!--            </thead>-->
+            </thead>
 
-<!--            <tbody>-->
-<!--            <tr>-->
-<!--                ДАЛЕЕ ДОБАВЬ!!!-->
-<!--                <td>1</td>-->
-<!--                <td>200</td>-->
-<!--                <td>Войти в электронн...</td>-->
-<!--                <td></td>-->
-<!--                <td>Войти в почту Mail.ru. Вы можете зайти в свой а...</td>-->
-<!--                <td>23/05/2023 10:55</td>-->
-<!--            </tr>-->
-<!--            </tbody>-->
+            <tbody>
+            <tr th:each="urlCheck : ${url.getUrlChecks()}" th:object="${urlCheck}">
+                <td th:text ="*{url.getUrlChecks().isEmpty()? '' : getId()}"></td>
+                <td th:text ="*{url.getUrlChecks().isEmpty()? '' : getStatusCode()}"></td>
+                <td th:text ="*{url.getUrlChecks().isEmpty()? '' : getTitle()}"></td>
+                <td th:text ="*{url.getUrlChecks().isEmpty()? '' : getH1()}"></td>
+                <td th:text ="*{url.getUrlChecks().isEmpty()? '' : getDescription()}"></td>
+                <td th:text ="*{url.getUrlChecks().isEmpty()? '' : #temporals.format(getCreatedAt(), 'dd/MM/yyyy HH:mm')}"></td>
+            </tr>
+            </tbody>
         </table>
 
     </div>

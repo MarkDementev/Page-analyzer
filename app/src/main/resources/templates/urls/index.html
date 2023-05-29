@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html lang = "ru"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/application.html}">
 
 <head>
@@ -19,16 +20,15 @@
                 <th class="col-1">Код ответа</th>
             </tr>
             </thead>
+
             <tbody>
             <tr th:each="url : ${urls}" th:object="${url}">
                 <td th:text ="*{getId()}"></td>
                 <td>
                     <a th:href="@{/urls/{id}(id=*{getId()})}" th:text="*{getName()}"></a>
                 </td>
-                <td></td>
-                <td></td>
-<!--                <td th:text ="${#temporals.format(url.getUrlChecks().getCreatedAt(), 'dd/MM/yyyy HH:mm')}"></td>-->
-<!--                <td th:text ="*{url.getUrlChecks().getStatusCode()}"></td>-->
+                <td th:text ="*{getUrlChecks().isEmpty()? '' : #temporals.format(getUrlChecks().get(getUrlChecks().size() - 1).getCreatedAt(), 'dd/MM/yyyy HH:mm')}"></td>
+                <td th:text ="*{getUrlChecks().isEmpty()? '' : getUrlChecks().get(getUrlChecks().size() - 1).getStatusCode()}"></td>
             </tr>
             </tbody>
         </table>

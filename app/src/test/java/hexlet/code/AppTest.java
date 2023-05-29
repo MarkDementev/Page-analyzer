@@ -5,6 +5,9 @@ import hexlet.code.domain.query.QUrl;
 
 import io.javalin.Javalin;
 
+import io.ebean.Database;
+import io.ebean.DB;
+
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
 
@@ -12,9 +15,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import io.ebean.Database;
-import io.ebean.DB;
 
 import java.util.List;
 
@@ -47,7 +47,7 @@ public class AppTest {
 
     @BeforeEach
     void beforeEach() {
-        database.script().run("/truncateUrl.sql");
+        database.script().run("/truncateDBTables.sql");
     }
 
     @Test
@@ -84,7 +84,7 @@ public class AppTest {
                 .name.equalTo(URL_EXAMPLE)
                 .findOne();
 
-        assertThat(addUrlResponse.getStatus()).isEqualTo(200);
+        assertThat(addUrlResponse.getStatus()).isEqualTo(302);
         assertThat(checkAddedUrlResponse.getStatus()).isEqualTo(200);
         assertThat(addedUrlFromDB).isNotNull();
         assertThat(checkAddedUrlResponse.getBody()).contains(URL_EXAMPLE);
@@ -95,7 +95,7 @@ public class AppTest {
                 .name.equalTo(URL_EXAMPLE)
                 .findList();
 
-        assertThat(repeatAddUrlResponse.getStatus()).isEqualTo(200);
+        assertThat(repeatAddUrlResponse.getStatus()).isEqualTo(302);
         assertThat(addedUrlsFromDB.size() == 1).isTrue();
     }
 }

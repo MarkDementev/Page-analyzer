@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html lang = "ru"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Анализатор страниц</title>
+    <title>Анализатор страниц </title>
     <link rel='stylesheet' href='/webjars/bootstrap/5.2.3/css/bootstrap.min.css'>
     <script src="/webjars/bootstrap/5.2.3/js/bootstrap.bundle.min.js"></script>
 </head>
@@ -15,8 +16,7 @@
         <div class="container-fluid">
             <a class="navbar-brand" href="/">Анализатор страниц</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"
-            >
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
@@ -29,7 +29,6 @@
     </nav>
 
     <main class="flex-grow-1">
-
         <div th:if="${session.flash}"
              th:class="'rounded-0 m-0 alert alert-dismissible fade show alert-' + ${ctx.consumeSessionAttribute('flash-type')}"
              role="alert"
@@ -41,7 +40,6 @@
         <div>
             <section layout:fragment="content"></section>
         </div>
-
     </main>
 
     <footer class="footer border-top py-3 mt-5 bg-light">
@@ -55,4 +53,4 @@
 
 </body>
 
-</html>
+</html >

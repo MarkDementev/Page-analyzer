@@ -1,7 +1,7 @@
 package hexlet.code.controllers;
 
 import hexlet.code.domain.Url;
-//import hexlet.code.domain.UrlCheck;
+import hexlet.code.domain.UrlCheck;
 import hexlet.code.domain.query.QUrl;
 
 import io.ebean.PagedList;
@@ -79,45 +79,42 @@ public final class UrlsController {
     };
 
     public static Handler showUrl = ctx -> {
-        long id = ctx.pathParamAsClass("id", Integer.class).getOrDefault(null);
-
+        long id = ctx.pathParamAsClass("id", long.class).getOrDefault(null);
         Url url = new QUrl()
                 .id.equalTo(id)
                 .findOne();
 
         if (url == null) {
-            throw new NotFoundResponse();
+            throw new NotFoundResponse("Url with id - " + id + " is not found in database!");
         }
-
         ctx.attribute("url", url);
 
         ctx.render("urls/url.html");
     };
 
     public static Handler addCheck = ctx -> {
-//        long id = ctx.pathParamAsClass("id", Integer.class).getOrDefault(null);
-//        Url url = new QUrl()
-//                .id.equalTo(id)
-//                .findOne();
-//
-//        if (url == null) {
-//            throw new NotFoundResponse();
-//        }
-//
+        long id = ctx.pathParamAsClass("id", long.class).getOrDefault(null);
+        Url url = new QUrl()
+                .id.equalTo(id)
+                .findOne();
+
+        if (url == null) {
+            throw new NotFoundResponse("Url with id - " + id + " is not found in database!");
+        }
 //        HttpResponse<String> response = Unirest.get(url.getName()).asString();
 //        int statusCode = response.getStatus();
-//        String title = null; //из head
-//        String h1 = null; //первый х1 из боди?
-//        String description = null;
-//
-//        UrlCheck urlCheck = new UrlCheck(statusCode, title, h1, description, url);
-//        urlCheck.save();
-//
-//        ctx.sessionAttribute("flash", "Страница успешно проверена");
-//        ctx.sessionAttribute("flash-type", "success");
-//        ctx.attribute("url", url);
-//        ctx.render("urls/url.html");
-//        ctx.redirect("urls/" + id);
+        int statusCode = 0;
+        String title = "Заглушка"; //из head
+        String h1 = "Заглушка"; //первый х1 из боди?
+        String description = "Заглушка";
+
+        UrlCheck urlCheck = new UrlCheck(statusCode, title, h1, description, url);
+        urlCheck.save();
+
+        ctx.sessionAttribute("flash", "Страница успешно проверена");
+        ctx.sessionAttribute("flash-type", "success");
+
+        ctx.redirect("/urls/" + id);
     };
 
     private static String transformUrl(String inputUrl) throws MalformedURLException {
