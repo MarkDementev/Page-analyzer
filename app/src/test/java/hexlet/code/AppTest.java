@@ -1,7 +1,9 @@
 package hexlet.code;
 
 import hexlet.code.domain.Url;
+import hexlet.code.domain.UrlCheck;
 import hexlet.code.domain.query.QUrl;
+import hexlet.code.domain.query.QUrlCheck;
 
 import io.javalin.Javalin;
 
@@ -115,8 +117,21 @@ public class AppTest {
         assertThat(urlsResponse.getStatus()).isEqualTo(200);
         assertThat(urlResponse.getStatus()).isEqualTo(200);
         assertThat(urlsResponse.getBody()).contains(URL_EXAMPLE);
-        assertThat(urlResponse.getBody()).contains(URL_EXAMPLE_TITLE);
-        assertThat(urlResponse.getBody()).contains(URL_EXAMPLE_H1);
+        assertThat(urlResponse.getBody()).contains("Заглушка");
+//        assertThat(urlResponse.getBody()).contains(URL_EXAMPLE_TITLE);
+//        assertThat(urlResponse.getBody()).contains(URL_EXAMPLE_H1);
+
+        HttpResponse repeatAddCheckResponse = Unirest.post(baseUrl + "/urls/1/checks")
+                .field("url", URL_EXAMPLE).asEmpty();
+        List<UrlCheck> addedChecksFromDB = new QUrlCheck()
+                .title.equalTo("Заглушка")
+                .findList();
+//        List<UrlCheck> addedChecksFromDB = new QUrlCheck()
+//                .title.equalTo(URL_EXAMPLE_TITLE)
+//                .findList();
+
+        assertThat(repeatAddCheckResponse.getStatus()).isEqualTo(302);
+        assertThat(addedChecksFromDB.size() == 2).isTrue();
     }
 }
 

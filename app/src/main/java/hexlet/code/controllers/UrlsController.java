@@ -9,15 +9,15 @@ import io.ebean.PagedList;
 import io.javalin.http.Handler;
 import io.javalin.http.NotFoundResponse;
 
+import kong.unirest.HttpResponse;
+import kong.unirest.Unirest;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
-//import kong.unirest.HttpResponse;
-//import kong.unirest.Unirest;
 
 public final class UrlsController {
     public static Handler createUrl = ctx -> {
@@ -101,11 +101,11 @@ public final class UrlsController {
         if (url == null) {
             throw new NotFoundResponse("Url with id - " + id + " is not found in database!");
         }
-//        HttpResponse<String> response = Unirest.get(url.getName()).asString();
-//        int statusCode = response.getStatus();
-        int statusCode = 0;
-        String title = "Заглушка"; //из head
-        String h1 = "Заглушка"; //первый х1 из боди?
+        HttpResponse<String> response = Unirest.get(url.getName()).asString();
+        int statusCode = response.getStatus();
+//        int statusCode = 0;
+        String title = "Заглушка";
+        String h1 = "Заглушка";
         String description = "Заглушка";
 
         UrlCheck urlCheck = new UrlCheck(statusCode, title, h1, description, url);
