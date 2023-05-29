@@ -40,6 +40,8 @@ dependencies {
 
     implementation 'org.webjars:bootstrap:5.2.3'
 
+    implementation 'com.konghq:unirest-java:4.0.0-RC2'
+
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.0-M1'
     testImplementation(
             'org.junit.jupiter:junit-jupiter-api:5.10.0-M1',

@@ -74,6 +74,7 @@ public final class App {
                 get(UrlsController.showAllAddedUrls);
                 path("{id}", () -> {
                     get(UrlsController.showUrl);
+                    path("checks", () -> post(UrlsController.addCheck));
                 });
             });
         });

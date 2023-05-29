@@ -25,8 +25,10 @@
                 <td>
                     <a th:href="@{/urls/{id}(id=*{getId()})}" th:text="*{getName()}"></a>
                 </td>
-                <td>НУЖНО ДОБАВИТЬ</td>
-                <td>НУЖНО ДОБАВИТЬ</td>
+                <td></td>
+                <td></td>
+<!--                <td th:text ="${#temporals.format(url.getUrlChecks().getCreatedAt(), 'dd/MM/yyyy HH:mm')}"></td>-->
+<!--                <td th:text ="*{url.getUrlChecks().getStatusCode()}"></td>-->
             </tr>
             </tbody>
         </table>
