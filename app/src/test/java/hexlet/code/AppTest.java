@@ -23,6 +23,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class AppTest {
     private static final String PROJECT_TITLE = "Анализатор страниц";
     private static final String URL_EXAMPLE = "https://www.example.com";
+    private static final String URL_EXAMPLE_TITLE = "Example Domain";
+    private static final String URL_EXAMPLE_H1 = "Example Domain";
     private static final String URLS_TABLE_FIRST_COLUMN_TITLE = "ID";
     private static final String URLS_TABLE_SECOND_COLUMN_TITLE = "Имя";
     private static Javalin app;
@@ -97,6 +99,24 @@ public class AppTest {
 
         assertThat(repeatAddUrlResponse.getStatus()).isEqualTo(302);
         assertThat(addedUrlsFromDB.size() == 1).isTrue();
+    }
+
+    @Test
+    void testAddCheck() {
+        HttpResponse addUrlResponse = Unirest.post(baseUrl + "/urls")
+                .field("url", URL_EXAMPLE).asEmpty();
+        HttpResponse addCheckResponse = Unirest.post(baseUrl + "/urls/1/checks")
+                .field("url", URL_EXAMPLE).asEmpty();
+        HttpResponse<String> urlsResponse = Unirest.get(baseUrl + "/urls").asString();
+        HttpResponse<String> urlResponse = Unirest.get(baseUrl + "/urls/1").asString();
+
+        assertThat(addUrlResponse.getStatus()).isEqualTo(302);
+        assertThat(addCheckResponse.getStatus()).isEqualTo(302);
+        assertThat(urlsResponse.getStatus()).isEqualTo(200);
+        assertThat(urlResponse.getStatus()).isEqualTo(200);
+        assertThat(urlsResponse.getBody()).contains(URL_EXAMPLE);
+        assertThat(urlResponse.getBody()).contains(URL_EXAMPLE_TITLE);
+        assertThat(urlResponse.getBody()).contains(URL_EXAMPLE_H1);
     }
 }
 
