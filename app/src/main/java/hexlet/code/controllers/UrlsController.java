@@ -11,6 +11,8 @@ import io.javalin.http.NotFoundResponse;
 
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -102,12 +104,20 @@ public final class UrlsController {
             throw new NotFoundResponse("Url with id - " + id + " is not found in database!");
         }
         HttpResponse<String> response = Unirest.get(url.getName()).asString();
-        int statusCode = response.getStatus();
-//        int statusCode = 0;
-        String title = "Заглушка";
-        String h1 = "Заглушка";
-        String description = "Заглушка";
+        Document parsedPage = Jsoup.parse(response.getBody());
 
+        int statusCode = response.getStatus();
+        String title = parsedPage.title();
+        String h1 = parsedPage.selectFirst("h1") == null
+                ? "" : String.valueOf(parsedPage.selectFirst("h1"));
+        String description = parsedPage.selectFirst("meta[name=content]") == null
+                ? "" : String.valueOf(parsedPage.selectFirst("meta[name=content]"));
+
+        if (!h1.equals("")) {
+            int h1Start = h1.indexOf(">") + 1;
+            int h1End = h1.lastIndexOf("</");
+            h1 = h1.substring(h1Start, h1End);
+        }
         UrlCheck urlCheck = new UrlCheck(statusCode, title, h1, description, url);
         urlCheck.save();
 
