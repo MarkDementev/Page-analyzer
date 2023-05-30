@@ -30,18 +30,33 @@ import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.MockResponse;
 
 public class AppTest {
-    //private static final String TEST_FILE_TITLE = "Example Domain";
     private static final String PROJECT_TITLE = "Анализатор страниц";
-    private static final String URL_EXAMPLE = "https://www.example.com";
-//    private static final String URL_EXAMPLE_TITLE = "Example Domain";
-//    private static final String URL_EXAMPLE_H1 = "Example Domain";
     private static final String URLS_TABLE_FIRST_COLUMN_TITLE = "ID";
+    private static final String URL_EXAMPLE = "https://www.example.com";
+    private static final String TEST_FILE_PATH = "./src/test/resources/fixtures/test-file.html";
+    private static final String TEST_FILE_TITLE = "test-file title";
+    private static final String TEST_FILE_H_1 = "test-file h1";
+    private static final String TEST_FILE_DESCRIPTION = "test-file description text";
+    private static MockWebServer mockServer;
+    private static MockResponse mockedResponse;
+    private static String url;
     private static Javalin app;
     private static String baseUrl;
     private static Database database;
 
+
     @BeforeAll
     public static void beforeAll() throws IOException {
+        Path filePath = Paths.get(TEST_FILE_PATH).toAbsolutePath().normalize();
+        String body = Files.readString(filePath);
+
+        mockServer = new MockWebServer();
+        mockedResponse = new MockResponse().setBody(body);
+        mockServer.enqueue(mockedResponse);
+        mockServer.start();
+
+        url = mockServer.url("/").toString();
+
         app = App.getApp();
         app.start(0);
 
@@ -57,12 +72,13 @@ public class AppTest {
     }
 
     @AfterAll
-    public static void afterAll() {
+    public static void afterAll() throws IOException {
+        mockServer.shutdown();
         app.stop();
     }
 
     @Test
-    void testIndex() {
+    void testMainPage() {
         HttpResponse<String> response = Unirest.get(baseUrl).asString();
 
         assertThat(response.getStatus()).isEqualTo(200);
@@ -70,7 +86,7 @@ public class AppTest {
     }
 
     @Test
-    void testUrls() {
+    void testShowAllAddedUrls() {
         HttpResponse<String> response = Unirest.get(baseUrl + "/urls").asString();
 
         assertThat(response.getStatus()).isEqualTo(200);
@@ -78,7 +94,7 @@ public class AppTest {
     }
 
     @Test
-    void testUrlWithoutAdd() {
+    void testShowUrl() {
         HttpResponse<String> response = Unirest.get(baseUrl + "/urls/1").asString();
 
         assertThat(response.getStatus()).isEqualTo(404);
@@ -86,7 +102,7 @@ public class AppTest {
     }
 
     @Test
-    void testAddUrlThenRepeat() {
+    void testCreateUrl() {
         HttpResponse addUrlResponse = Unirest.post(baseUrl + "/urls")
                 .field("url", URL_EXAMPLE).asEmpty();
         HttpResponse<String> checkAddedUrlResponse = Unirest.get(baseUrl + "/urls/1").asString();
@@ -110,26 +126,11 @@ public class AppTest {
     }
 
     @Test
-    void testAddCheckThenRepeat() throws IOException {
-        Path filePath = Paths.get("./src/test/resources/test-file.html").toAbsolutePath().normalize();
-        String body = Files.readString(filePath);
-
-        MockWebServer mockServer = new MockWebServer();
-        MockResponse mockedResponse = new MockResponse().setBody(body);
-        mockServer.enqueue(mockedResponse);
-        mockServer.start();
-
-        String url = mockServer.url("/").toString().replaceAll("/$", "");
-        System.out.println(url);
-
+    void testAddCheck() {
         HttpResponse addUrlResponse = Unirest.post(baseUrl + "/urls")
                 .field("url", url).asEmpty();
         HttpResponse addCheckResponse = Unirest.post(baseUrl + "/urls/1/checks")
                 .field("url", url).asEmpty();
-//        HttpResponse addUrlResponse = Unirest.post(baseUrl + "/urls")
-//                .field("url", URL_EXAMPLE).asEmpty();
-//        HttpResponse addCheckResponse = Unirest.post(baseUrl + "/urls/1/checks")
-//                .field("url", URL_EXAMPLE).asEmpty();
         HttpResponse<String> urlsResponse = Unirest.get(baseUrl + "/urls").asString();
         HttpResponse<String> urlResponse = Unirest.get(baseUrl + "/urls/1").asString();
 
@@ -137,26 +138,15 @@ public class AppTest {
         assertThat(addCheckResponse.getStatus()).isEqualTo(302);
         assertThat(urlsResponse.getStatus()).isEqualTo(200);
         assertThat(urlResponse.getStatus()).isEqualTo(200);
-        assertThat(urlsResponse.getBody()).contains(url);
-//        assertThat(urlsResponse.getBody()).contains(URL_EXAMPLE);
-        assertThat(urlResponse.getBody()).contains("Заглушка");
-//        assertThat(urlResponse.getBody()).contains(URL_EXAMPLE_TITLE);
-//        assertThat(urlResponse.getBody()).contains(URL_EXAMPLE_H1);
 
-        HttpResponse repeatAddCheckResponse = Unirest.post(baseUrl + "/urls/1/checks")
-                .field("url", url).asEmpty();
-//        HttpResponse repeatAddCheckResponse = Unirest.post(baseUrl + "/urls/1/checks")
-//                .field("url", URL_EXAMPLE).asEmpty();
+        assertThat(urlsResponse.getBody()).contains(url.substring(0, url.length() - 1));
+        assertThat(urlResponse.getBody()).contains(TEST_FILE_TITLE);
+        assertThat(urlResponse.getBody()).contains(TEST_FILE_H_1);
+        assertThat(urlResponse.getBody()).contains(TEST_FILE_DESCRIPTION);
+
         List<UrlCheck> addedChecksFromDB = new QUrlCheck()
-                .title.equalTo("Заглушка")
+                .title.equalTo(TEST_FILE_TITLE)
                 .findList();
-//        List<UrlCheck> addedChecksFromDB = new QUrlCheck()
-//                .title.equalTo(URL_EXAMPLE_TITLE)
-//                .findList();
-
-//        assertThat(repeatAddCheckResponse.getStatus()).isEqualTo(302);
-        assertThat(addedChecksFromDB.size() == 2).isTrue();
-
-        mockServer.shutdown();
+        assertThat(addedChecksFromDB.size() == 1).isTrue();
     }
 }

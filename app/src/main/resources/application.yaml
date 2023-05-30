@@ -1,6 +1,6 @@
 datasource:
-  default: development
-#  default: ${APP_ENV}
+#  default: development
+  default: ${APP_ENV}
 
   development:
     username: sa

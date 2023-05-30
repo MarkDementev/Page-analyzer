@@ -109,15 +109,10 @@ public final class UrlsController {
         int statusCode = response.getStatus();
         String title = parsedPage.title();
         String h1 = parsedPage.selectFirst("h1") == null
-                ? "" : String.valueOf(parsedPage.selectFirst("h1"));
-        String description = parsedPage.selectFirst("meta[name=content]") == null
-                ? "" : String.valueOf(parsedPage.selectFirst("meta[name=content]"));
+                ? "" : parsedPage.selectFirst("h1").text();
+        String description = parsedPage.selectFirst("meta[name=description]") == null
+                ? "" : parsedPage.selectFirst("meta[name=description]").attr("content");
 
-        if (!h1.equals("")) {
-            int h1Start = h1.indexOf(">") + 1;
-            int h1End = h1.lastIndexOf("</");
-            h1 = h1.substring(h1Start, h1End);
-        }
         UrlCheck urlCheck = new UrlCheck(statusCode, title, h1, description, url);
         urlCheck.save();
 
