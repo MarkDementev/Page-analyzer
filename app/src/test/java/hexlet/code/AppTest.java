@@ -29,7 +29,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.MockResponse;
 
-public class AppTest {
+public final class AppTest {
     private static final String PROJECT_TITLE = "Анализатор страниц";
     private static final String URLS_TABLE_FIRST_COLUMN_TITLE = "ID";
     private static final String URL_EXAMPLE = "https://www.example.com";

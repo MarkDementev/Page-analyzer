@@ -11,7 +11,7 @@ import javax.persistence.ManyToOne;
 import java.time.Instant;
 
 @Entity
-public class UrlCheck extends Model {
+public final class UrlCheck extends Model {
     @Id
     private long id;
     private int statusCode;
