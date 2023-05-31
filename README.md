@@ -10,8 +10,16 @@
 
 This project is a website based on the Javelin framework. This site analyzes the pages indicated to it for SEO suitability.
 
-# Project link:
+# Project link
 
 [https://markdementev-java-project-72.onrender.com](https://markdementev-java-project-72.onrender.com)
 
-# How to use: step by step:
+# How to use: step by step
+
+1) Insert url into form. Click on "проверить" button.
+
+2) Choose added url link in table - click on it.
+
+3) Click on "Запустить проверку" button.
+
+4) Finish!
