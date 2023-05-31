@@ -1,11 +1,26 @@
+setup:
+	gradle wrapper --gradle-version 7.4.2
+
 clean:
 	./gradlew clean
 
 build:
 	./gradlew clean build
 
+start:
+	APP_ENV=development ./gradlew run
+
 install:
-	./gradlew clean install
+	./gradlew install
+
+start-dist:
+	APP_ENV=production ./build/install/app/bin/app
+
+generate-migrations:
+	./gradlew generateMigrations
+
+lint:
+	./gradlew checkstyleMain checkstyleTest
 
 test:
 	./gradlew test
@@ -13,13 +28,7 @@ test:
 report:
 	./gradlew jacocoTestReport
 
-lint:
-	./gradlew checkstyleMain checkstyleTest
-
-update-deps:
-	./gradlew useLatestVersions
-
-run:
-	./gradlew run
+check-updates:
+	./gradlew dependencyUpdates
 
 .PHONY: build
