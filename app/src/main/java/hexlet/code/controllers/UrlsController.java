@@ -11,6 +11,7 @@ import io.javalin.http.NotFoundResponse;
 
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 

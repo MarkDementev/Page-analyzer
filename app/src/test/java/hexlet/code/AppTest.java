@@ -44,7 +44,6 @@ public final class AppTest {
     private static String baseUrl;
     private static Database database;
 
-
     @BeforeAll
     public static void beforeAll() throws IOException {
         Path filePath = Paths.get(TEST_FILE_PATH).toAbsolutePath().normalize();
