@@ -1,5 +1,4 @@
 datasource:
-#  default: development
   default: ${APP_ENV}
 
   development:
