@@ -16,7 +16,7 @@ This project is a website based on the Javelin framework. This site analyzes the
 
 # How to use: step by step
 
-1) Insert url into form. Click on "проверить" button.
+1) Insert url into form. Click on "Проверить" button.
 
 2) Choose added url link in table - click on it.
 
