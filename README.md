@@ -13,3 +13,5 @@ This project is a website based on the Javelin framework. This site analyzes the
 # Project link:
 
 [https://markdementev-java-project-72.onrender.com](https://markdementev-java-project-72.onrender.com)
+
+# How to use: step by step:
