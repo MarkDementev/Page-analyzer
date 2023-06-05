@@ -15,7 +15,6 @@ import kong.unirest.Unirest;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 import java.util.Objects;
@@ -23,16 +22,22 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public final class UrlsController {
+    private static final String INPUT_URL_NULL = "inputUrl must not be null";
+
     public static Handler createUrl = ctx -> {
         String inputUrl = ctx.formParam("url");
-        String normalizedUrl = transformUrl(Objects.requireNonNull(inputUrl));
+        URL parsedUrl;
 
-        if (normalizedUrl == null) {
+        try {
+            parsedUrl = new URL(Objects.requireNonNull(inputUrl, INPUT_URL_NULL));
+        } catch (Exception e) {
             ctx.sessionAttribute("flash", "Некорректный URL");
             ctx.sessionAttribute("flash-type", "danger");
             ctx.redirect("/");
             return;
         }
+        String normalizedUrl = transformUrl(parsedUrl);
+
         Url checkedUrl = new QUrl()
                 .name.equalTo(normalizedUrl)
                 .findOne();
@@ -123,13 +128,9 @@ public final class UrlsController {
         ctx.redirect("/urls/" + id);
     };
 
-    private static String transformUrl(String inputUrl) throws MalformedURLException {
-        if (!(inputUrl.startsWith("http://") || inputUrl.startsWith("https://"))) {
-            return null;
-        }
-        URL urlToTransform = new URL(inputUrl);
-        String protocol = urlToTransform.getProtocol();
-        String authority = urlToTransform.getAuthority();
+    private static String transformUrl(URL parsedUrl) {
+        String protocol = parsedUrl.getProtocol();
+        String authority = parsedUrl.getAuthority();
 
         return protocol + "://" + authority;
     }
