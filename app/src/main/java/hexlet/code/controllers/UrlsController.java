@@ -105,11 +105,23 @@ public final class UrlsController {
         Url url = new QUrl()
                 .id.equalTo(id)
                 .findOne();
+        HttpResponse<String> response;
 
         if (url == null) {
             throw new NotFoundResponse("Url with id - " + id + " is not found in database!");
         }
-        HttpResponse<String> response = Unirest.get(url.getName()).asString();
+
+        //Сергей, точно не знаю, какой Exception может выпасть при запросе через Unirest
+        //Потому в catch выставил общий Exception, по аналогии с тем, что добавил в createUrl
+        //по твоей рекомендации
+        try {
+            response = Unirest.get(url.getName()).asString();
+        } catch (Exception e) {
+            ctx.sessionAttribute("flash", "Проблемы с доступом к сайту, попробуйте в другой раз!");
+            ctx.sessionAttribute("flash-type", "danger");
+            ctx.redirect("/urls/" + id);
+            return;
+        }
         Document parsedPage = Jsoup.parse(response.getBody());
 
         int statusCode = response.getStatus();
