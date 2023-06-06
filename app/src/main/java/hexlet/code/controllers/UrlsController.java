@@ -106,40 +106,34 @@ public final class UrlsController {
         Url url = new QUrl()
                 .id.equalTo(id)
                 .findOne();
-        HttpResponse<String> response;
 
         if (url == null) {
             throw new NotFoundResponse("Url with id - " + id + " is not found in database!");
         }
 
         try {
-            response = Unirest.get(url.getName()).asString();
+            HttpResponse<String> response = Unirest.get(url.getName()).asString();
+            Document parsedPage = Jsoup.parse(response.getBody());
+
+            int statusCode = response.getStatus();
+            String title = parsedPage.title();
+            String h1 = parsedPage.selectFirst("h1") == null
+                    ? "" : parsedPage.selectFirst("h1").text();
+            String description = parsedPage.selectFirst("meta[name=description]") == null
+                    ? "" : parsedPage.selectFirst("meta[name=description]").attr("content");
+
+            UrlCheck urlCheck = new UrlCheck(statusCode, title, h1, description, url);
+            urlCheck.save();
+
+            ctx.sessionAttribute("flash", "Страница успешно проверена");
+            ctx.sessionAttribute("flash-type", "success");
         } catch (UnirestException e) {
             ctx.sessionAttribute("flash", "Проблемы с доступом к сайту, попробуйте в другой раз!");
             ctx.sessionAttribute("flash-type", "danger");
-            ctx.redirect("/urls/" + id);
-            return;
         } catch (Exception e) {
             ctx.sessionAttribute("flash", e.getMessage());
             ctx.sessionAttribute("flash-type", "danger");
-            ctx.redirect("/urls/" + id);
-            return;
         }
-        Document parsedPage = Jsoup.parse(response.getBody());
-
-        int statusCode = response.getStatus();
-        String title = parsedPage.title();
-        String h1 = parsedPage.selectFirst("h1") == null
-                ? "" : parsedPage.selectFirst("h1").text();
-        String description = parsedPage.selectFirst("meta[name=description]") == null
-                ? "" : parsedPage.selectFirst("meta[name=description]").attr("content");
-
-        UrlCheck urlCheck = new UrlCheck(statusCode, title, h1, description, url);
-        urlCheck.save();
-
-        ctx.sessionAttribute("flash", "Страница успешно проверена");
-        ctx.sessionAttribute("flash-type", "success");
-
         ctx.redirect("/urls/" + id);
     };
 
