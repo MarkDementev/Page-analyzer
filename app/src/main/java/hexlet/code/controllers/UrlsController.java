@@ -11,6 +11,7 @@ import io.javalin.http.NotFoundResponse;
 
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
+import kong.unirest.UnirestException;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -111,13 +112,15 @@ public final class UrlsController {
             throw new NotFoundResponse("Url with id - " + id + " is not found in database!");
         }
 
-        //Сергей, точно не знаю, какой Exception может выпасть при запросе через Unirest
-        //Потому в catch выставил общий Exception, по аналогии с тем, что добавил в createUrl
-        //по твоей рекомендации
         try {
             response = Unirest.get(url.getName()).asString();
-        } catch (Exception e) {
+        } catch (UnirestException e) {
             ctx.sessionAttribute("flash", "Проблемы с доступом к сайту, попробуйте в другой раз!");
+            ctx.sessionAttribute("flash-type", "danger");
+            ctx.redirect("/urls/" + id);
+            return;
+        } catch (Exception e) {
+            ctx.sessionAttribute("flash", e.getMessage());
             ctx.sessionAttribute("flash-type", "danger");
             ctx.redirect("/urls/" + id);
             return;
