@@ -67,7 +67,7 @@ public final class AppTest {
 
     @BeforeEach
     void beforeEach() {
-        database.script().run("/truncateDBTables.sql");
+        database.script().run("/truncate-db-tables.sql");
     }
 
     @AfterAll
@@ -104,14 +104,15 @@ public final class AppTest {
     void testCreateUrl() {
         HttpResponse addUrlResponse = Unirest.post(baseUrl + "/urls")
                 .field("url", URL_EXAMPLE).asEmpty();
-        HttpResponse<String> checkAddedUrlResponse = Unirest.get(baseUrl + "/urls/1").asString();
         Url addedUrlFromDB = new QUrl()
                 .name.equalTo(URL_EXAMPLE)
                 .findOne();
+        HttpResponse<String> checkAddedUrlResponse = Unirest
+                .get(baseUrl + "/urls/" + addedUrlFromDB.getId()).asString();
 
         assertThat(addUrlResponse.getStatus()).isEqualTo(302);
-        assertThat(checkAddedUrlResponse.getStatus()).isEqualTo(200);
         assertThat(addedUrlFromDB).isNotNull();
+        assertThat(checkAddedUrlResponse.getStatus()).isEqualTo(200);
         assertThat(checkAddedUrlResponse.getBody()).contains(URL_EXAMPLE);
 
         HttpResponse repeatAddUrlResponse = Unirest.post(baseUrl + "/urls")
@@ -126,12 +127,19 @@ public final class AppTest {
 
     @Test
     void testAddCheck() {
+        database.script().run("/insert-to-return-id.sql");
+        UrlCheck addedCheck = new QUrlCheck()
+                .title.equalTo("addedTestCheckWithId")
+                .findOne();
+        long idFromAddedCheck = addedCheck.getId();
+        long idToAddNewCheck = ++idFromAddedCheck;
+
         HttpResponse addUrlResponse = Unirest.post(baseUrl + "/urls")
                 .field("url", url).asEmpty();
-        HttpResponse addCheckResponse = Unirest.post(baseUrl + "/urls/1/checks")
+        HttpResponse addCheckResponse = Unirest.post(baseUrl + "/urls/" + idToAddNewCheck + "/checks")
                 .field("url", url).asEmpty();
         HttpResponse<String> urlsResponse = Unirest.get(baseUrl + "/urls").asString();
-        HttpResponse<String> urlResponse = Unirest.get(baseUrl + "/urls/1").asString();
+        HttpResponse<String> urlResponse = Unirest.get(baseUrl + "/urls/" + idToAddNewCheck).asString();
 
         assertThat(addUrlResponse.getStatus()).isEqualTo(302);
         assertThat(addCheckResponse.getStatus()).isEqualTo(302);
