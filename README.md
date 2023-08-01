@@ -8,7 +8,7 @@
 
 # Overview
 
-This project is a website based on the Javelin framework. This site analyzes the pages indicated to it for SEO suitability.
+This project is a website based on the Javalin framework. This site analyzes the pages indicated to it for SEO suitability.
 
 # Project link
 
